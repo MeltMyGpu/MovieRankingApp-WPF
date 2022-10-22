@@ -50,9 +50,9 @@ public class RankingDatabaseContext : DbContext
 				.OnDelete(DeleteBehavior.ClientSetNull);
 		});
 
-		OnModelCreatingPartial(modelBuilder);
+		//OnModelCreatingPartial(modelBuilder);
 	}
 
-	partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+	//partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
 }

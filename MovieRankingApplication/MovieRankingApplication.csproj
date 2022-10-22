@@ -10,6 +10,7 @@
   <ItemGroup>
     <Folder Include="ApplicationHelpers\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
 
   <ItemGroup>
     <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MovieRankingApplication.Model\MovieRankingApplication.Model.csproj" />
   </ItemGroup>
 
 </Project>
