@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using MovieRankingApplication.Model.Context;
 using MovieRankingApplication.Model.generated;
 
 namespace MovieRankingApplication.Model
@@ -17,8 +18,8 @@ namespace MovieRankingApplication.Model
         {
         }
 
-        public virtual DbSet<MovieEntry> MovieEntries { get; set; } = null!;
-        public virtual DbSet<UserScore> UserScores { get; set; } = null!;
+        public virtual DbSet<generated.MovieEntry> MovieEntries { get; set; } = null!;
+        public virtual DbSet<generated.UserScore> UserScores { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,7 +32,7 @@ namespace MovieRankingApplication.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MovieEntry>(entity =>
+            modelBuilder.Entity<generated.MovieEntry>(entity =>
             {
                 entity.HasKey(e => e.MovieId);
 
@@ -41,7 +42,7 @@ namespace MovieRankingApplication.Model
                     .IsUnique();
             });
 
-            modelBuilder.Entity<UserScore>(entity =>
+            modelBuilder.Entity<generated.UserScore>(entity =>
             {
                 entity.HasKey(e => e.ScoreId);
 

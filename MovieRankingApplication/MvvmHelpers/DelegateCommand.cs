@@ -6,48 +6,41 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MovieRankingApplication.MvvmHelpers;
-    public class DelegateCommand : ICommand
+public class DelegateCommand : ICommand
 {
     // Requires testing
-    public event EventHandler? CanExecuteChanged  // Need to Properly look into this.
-    {
-        add
-        {
-            CommandManager.RequerySuggested += value;
-        }
-        remove
-        {
-            CommandManager.RequerySuggested -= value;
-        }
-    }
+    public event EventHandler? CanExecuteChanged; // Need to Properly look into this.
 
-    Action<object> _action;
+
+
+    Action _action;
     // Changed from Action _action to this, may need to be changed back
-    Func<object, bool> _canExecute;
+    // Func<object, bool> _canExecute;
 
 
-    public DelegateCommand(Action<object> execute, Func<object, bool> canExecute)
+    public DelegateCommand(Action execute  )
     {
         _action = execute;
-        _canExecute = canExecute;
+        // _canExecute = canExecute;
     }
 
     // May require mild rewriting later
     public bool CanExecute(object? parameter)
     {
-        if (_canExecute != null)
-        {
-            return _canExecute(parameter!);
-        }
-        else
-        {
-            return false;
-        }
+        // if (_canExecute != null)
+        // {
+        //     return _canExecute(parameter!);
+        // }
+        // else
+        // {
+        //     return false;
+        // }
+        return true;
     }
 
     public void Execute(object? parameter)
     {
-        _action(parameter!);
+        _action();
     }
 }
 
