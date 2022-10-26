@@ -3,7 +3,7 @@ using MovieRankingApplication.Model.Context;
 using MovieRankingApplication.ViewModels.Interfaces;
 using MovieRankingApplication.MvvmHelpers;
 
-namespace MovieRankingApplication.ViewModels;
+namespace MovieRankingApplication.ViewModels.PageViewModels;
 
 public class MainWindowViewModel : BindableBase, IMainWindowViewModel
 {
@@ -17,14 +17,14 @@ public class MainWindowViewModel : BindableBase, IMainWindowViewModel
 
     #region Properties and fields
     private MovieEntry _selectedModel;
-    public MovieEntry SelectedModel 
-    { 
-        get =>_selectedModel; 
-        set 
+    public MovieEntry SelectedModel
+    {
+        get => _selectedModel;
+        set
         {
-            if(_selectedModel != value)
+            if (_selectedModel != value)
                 _selectedModel = value;
-        } 
+        }
     }
 
     private string _currentPageUri;
@@ -44,13 +44,13 @@ public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     #region Private helper methods
     private void DoChangeToAddView()
     {
-        if(_editMode == true)
+        if (_editMode == true)
             _editMode = false;
         _currentPageUri = "PlaceHolderStringForAddView";
     }
     private void DoChangeToEditView()
     {
-        if(_editMode == false)
+        if (_editMode == false)
             _editMode = true;
         _currentPageUri = "PlaceHolderStringForEditView";
     }
