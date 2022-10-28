@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using MovieRankingApplication.Model.Context;
-using MovieRankingApplication.Model.generated;
-
-namespace MovieRankingApplication.Model
+namespace MovieRankingApplication.Model.Generated
 {
-    public partial class MovieRankingDatabaseContext : DbContext
+    public interface IMovieRankingDatabaseContext
+    {
+        // Temp interface for current setup
+        DbSet<MovieEntry> MovieEntries { get; set; }
+        DbSet<UserScore> UserScores { get; set; }
+        void DoSaveChanges();
+    }
+
+    public partial class MovieRankingDatabaseContext : DbContext, IMovieRankingDatabaseContext
     {
         public MovieRankingDatabaseContext()
         {
@@ -18,21 +23,26 @@ namespace MovieRankingApplication.Model
         {
         }
 
-        public virtual DbSet<generated.MovieEntry> MovieEntries { get; set; } = null!;
-        public virtual DbSet<generated.UserScore> UserScores { get; set; } = null!;
+        public virtual DbSet<Generated.MovieEntry> MovieEntries { get; set; } = null!;
+        public virtual DbSet<Generated.UserScore> UserScores { get; set; } = null!;
+
+        public void DoSaveChanges()
+        {
+            SaveChanges();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlite("DataSource=E:\\Code\\Project libary\\C#\\MovieRankingApp-WPF\\MovieRankingApplication.Model\\MovieRankingDatabase.db");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<generated.MovieEntry>(entity =>
+            modelBuilder.Entity<Generated.MovieEntry>(entity =>
             {
                 entity.HasKey(e => e.MovieId);
 
@@ -42,7 +52,7 @@ namespace MovieRankingApplication.Model
                     .IsUnique();
             });
 
-            modelBuilder.Entity<generated.UserScore>(entity =>
+            modelBuilder.Entity<Generated.UserScore>(entity =>
             {
                 entity.HasKey(e => e.ScoreId);
 

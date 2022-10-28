@@ -1,11 +1,11 @@
 using System.Windows.Input;
-using MovieRankingApplication.Model.Context;
+using MovieRankingApplication.ViewModels.DataObjectViewModels;
 
 namespace MovieRankingApplication.ViewModels.Interfaces;
 
 public interface IMainWindowViewModel
 {
-    public MovieEntry SelectedModel { get; set; }
+    public MovieEntryViewModel SelectedModel { get; set; }
     public string CurrentPageUri { get; }
     public ICommand ChangeToEditView { get; }
     public ICommand ChangeToAddView { get; }

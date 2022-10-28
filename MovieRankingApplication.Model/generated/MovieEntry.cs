@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MovieRankingApplication.Model.generated
+namespace MovieRankingApplication.Model.Generated
 {
     public partial class MovieEntry
     {

@@ -1,7 +1,7 @@
 using System.Windows.Input;
-using MovieRankingApplication.Model.Context;
 using MovieRankingApplication.ViewModels.Interfaces;
 using MovieRankingApplication.MvvmHelpers;
+using MovieRankingApplication.ViewModels.DataObjectViewModels;
 
 namespace MovieRankingApplication.ViewModels.PageViewModels;
 
@@ -10,14 +10,14 @@ public class MainWindowViewModel : BindableBase, IMainWindowViewModel
 
     public MainWindowViewModel()
     {
-        _selectedModel = new MovieEntry();
+        _selectedModel = new MovieEntryViewModel();
         _currentPageUri = "PlaceHolder";
         _editMode = true;
     }
 
     #region Properties and fields
-    private MovieEntry _selectedModel;
-    public MovieEntry SelectedModel
+    private MovieEntryViewModel _selectedModel;
+    public MovieEntryViewModel SelectedModel
     {
         get => _selectedModel;
         set
