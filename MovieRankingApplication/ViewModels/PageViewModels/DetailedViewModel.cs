@@ -48,7 +48,7 @@ public class DetailedViewModel
     }
 
     public ICommand DoSaveChanges { get => new DelegateCommand(CheckTypeOfSave); }
-    //public ICommand 
+    public ICommand DoResetChanges { get => new DelegateCommand(CheckLoadTypeOrResetChanges); }
 
     #endregion
 
@@ -67,8 +67,43 @@ public class DetailedViewModel
 
     private void LoadNewMode()
     {
-        throw new NotImplementedException();
+        _userScores.Clear();
+        // Gets the highest value of entity instance Id from the database, if the database has no entries, value set to one.
+        long HighestEntryId = _databaseContext.MovieEntries.Max(e => e == null ? 0 : e.MovieId);
+        long HighestScoreId = _databaseContext.UserScores.Max(e => e == null ? 0 : e.ScoreId);
+
+        _currentEntry = FreshMovieEntry(HighestEntryId);
+
+       // Creates new userScores based off of the amount of usernames provided in mainWinRef 
+        for (int i = 1; i <= _mainWinRef.UserNames.Count(); i++)
+            _userScores.Add(FreshUserScore( i, HighestScoreId ));
     }
+    private IMovieEntryViewModel FreshMovieEntry(long highestEntryId)
+    {
+        return new MovieEntryViewModel(new MovieEntry()
+        {
+            MovieId = highestEntryId + 1,
+            MovieName = "UNSET",
+            MovieGenre = "UNSET",
+            MovieTotalScore = 0
+        });
+    }
+    private IUserScoreViewModel FreshUserScore(int i, long highestScoreId)
+    {
+        return new UserScoreViewModel(new UserScore()
+        {
+            ScoreId = highestScoreId + (long)i,
+            MovieId = _currentEntry.MovieId,
+            UserName = _mainWinRef.UserNames[i - 1],
+            ActingScore = 0L,
+            CharacterScore = 0L,
+            CinematographyScore = 0L,
+            PlotScore = 0L,
+            TotalScore = 0L
+        });
+    }
+
+
 
     private void LoadEditMode()
     {
@@ -116,6 +151,7 @@ public class DetailedViewModel
         _databaseContext.MovieEntries.Add(_currentEntry.Model);
         foreach (var Score in _userScores)
             _databaseContext.UserScores.Add(Score.Model);
+
         _databaseContext.DoSaveChanges();
         var temp = _mainWinRef.ChangetoListView; // requires testing, may not work.
 

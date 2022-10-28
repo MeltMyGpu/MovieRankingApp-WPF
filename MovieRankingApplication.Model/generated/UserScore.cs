@@ -8,11 +8,11 @@ namespace MovieRankingApplication.Model.Generated
         public long ScoreId { get; set; }
         public long MovieId { get; set; }
         public string UserName { get; set; } = null!;
-        public string ActingScore { get; set; } = null!;
-        public string CharacterScore { get; set; } = null!;
-        public string CinematographyScore { get; set; } = null!;
-        public string PlotScore { get; set; } = null!;
-        public string TotalScore { get; set; } = null!;
+        public long ActingScore { get; set; } 
+        public long CharacterScore { get; set; } 
+        public long CinematographyScore { get; set; } 
+        public long PlotScore { get; set; } 
+        public long TotalScore { get; set; } 
 
         public virtual MovieEntry Movie { get; set; } = null!;
     }

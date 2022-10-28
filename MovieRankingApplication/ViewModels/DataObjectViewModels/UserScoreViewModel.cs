@@ -56,7 +56,7 @@ public class UserScoreViewModel : BindableBase, IUserScoreViewModel
         }
     }
 
-    public string ActingScore
+    public long ActingScore
     {
         get => _userScore.ActingScore;
         set
@@ -70,7 +70,7 @@ public class UserScoreViewModel : BindableBase, IUserScoreViewModel
         }
     }
 
-    public string CharacterScore
+    public long CharacterScore
     {
         get => _userScore.CharacterScore;
         set
@@ -84,7 +84,7 @@ public class UserScoreViewModel : BindableBase, IUserScoreViewModel
         }
     }
 
-    public string CinematographyScore
+    public long CinematographyScore
     {
         get => _userScore.CinematographyScore;
         set
@@ -98,7 +98,7 @@ public class UserScoreViewModel : BindableBase, IUserScoreViewModel
         }
     }
 
-    public string PlotScore
+    public long PlotScore
     {
         get => _userScore.PlotScore;
         set
@@ -112,7 +112,7 @@ public class UserScoreViewModel : BindableBase, IUserScoreViewModel
         }
     }
 
-    public string TotalScore
+    public long TotalScore
     {
         get => _userScore.TotalScore;
         set

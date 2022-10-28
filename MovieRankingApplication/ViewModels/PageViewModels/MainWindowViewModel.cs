@@ -8,14 +8,21 @@ namespace MovieRankingApplication.ViewModels.PageViewModels;
 public class MainWindowViewModel : BindableBase, IMainWindowViewModel
 {
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(params string[] userNames)
     {
         _selectedModel = new MovieEntryViewModel();
         _currentPageUri = "PlaceHolder";
         _editMode = true;
+        _userNames = userNames;
     }
 
     #region Properties and fields
+    private string[] _userNames;
+    public string[] UserNames
+    {
+        get => _userNames;
+    }
+
     private MovieEntryViewModel _selectedModel;
     public MovieEntryViewModel SelectedModel
     {

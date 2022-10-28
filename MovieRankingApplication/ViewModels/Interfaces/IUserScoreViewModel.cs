@@ -9,9 +9,9 @@ public interface IUserScoreViewModel
     long ScoreId { get; set; }
     long MovieId { get; set; }
     string UserName { get; set; }
-    string ActingScore { get; set; }
-    string CharacterScore { get; set; }
-    string CinematographyScore { get; set; }
-    string PlotScore { get; set; }
-    string TotalScore { get; set; }
+    long ActingScore { get; set; }
+    long CharacterScore { get; set; }
+    long CinematographyScore { get; set; }
+    long PlotScore { get; set; }
+    long TotalScore { get; set; }
 }
