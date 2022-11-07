@@ -23,8 +23,8 @@ namespace MovieRankingApplication.Model.Generated
         {
         }
 
-        public virtual DbSet<Generated.MovieEntry> MovieEntries { get; set; } = null!;
-        public virtual DbSet<Generated.UserScore> UserScores { get; set; } = null!;
+        public virtual DbSet<MovieEntry> MovieEntries { get; set; } = null!;
+        public virtual DbSet<UserScore> UserScores { get; set; } = null!;
 
         public void DoSaveChanges()
         {
@@ -42,7 +42,7 @@ namespace MovieRankingApplication.Model.Generated
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Generated.MovieEntry>(entity =>
+            modelBuilder.Entity<MovieEntry>(entity =>
             {
                 entity.HasKey(e => e.MovieId);
 
@@ -52,7 +52,7 @@ namespace MovieRankingApplication.Model.Generated
                     .IsUnique();
             });
 
-            modelBuilder.Entity<Generated.UserScore>(entity =>
+            modelBuilder.Entity<UserScore>(entity =>
             {
                 entity.HasKey(e => e.ScoreId);
 

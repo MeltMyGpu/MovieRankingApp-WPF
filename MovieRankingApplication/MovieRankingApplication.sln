@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRankingApplication", "MovieRankingApplication.csproj", "{4040FC36-67BF-46F0-93F9-F695524D2515}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRankingApplication", "MovieRankingApplication.csproj", "{4040FC36-67BF-46F0-93F9-F695524D2515}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRankingApplication.Model", "..\MovieRankingApplication.Model\MovieRankingApplication.Model.csproj", "{06E3BF6C-E48A-4D28-84A5-3D4DE9019AB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRankingApplication.Model", "..\MovieRankingApplication.Model\MovieRankingApplication.Model.csproj", "{06E3BF6C-E48A-4D28-84A5-3D4DE9019AB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRankingApplication.ViewModels", "..\MovieRankingApplication.ViewModels\MovieRankingApplication.ViewModels.csproj", "{208E4841-C703-4CEC-B528-ABF3B5D40E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRankingApplication.UnitTests", "..\MovieRankingApplication.UnitTests\MovieRankingApplication.UnitTests.csproj", "{E5F7B51C-32D3-4728-BE89-098562C78E38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{06E3BF6C-E48A-4D28-84A5-3D4DE9019AB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06E3BF6C-E48A-4D28-84A5-3D4DE9019AB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06E3BF6C-E48A-4D28-84A5-3D4DE9019AB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208E4841-C703-4CEC-B528-ABF3B5D40E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208E4841-C703-4CEC-B528-ABF3B5D40E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208E4841-C703-4CEC-B528-ABF3B5D40E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208E4841-C703-4CEC-B528-ABF3B5D40E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5F7B51C-32D3-4728-BE89-098562C78E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F7B51C-32D3-4728-BE89-098562C78E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F7B51C-32D3-4728-BE89-098562C78E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F7B51C-32D3-4728-BE89-098562C78E38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

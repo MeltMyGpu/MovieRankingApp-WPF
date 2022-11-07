@@ -22,6 +22,7 @@ public class DetailedViewModel
     {
         this._databaseContext = databaseContext;
         this._mainWinRef = mainWinRef;
+        this._userScores = new List<IUserScoreViewModel>();
         CheckLoadTypeOrResetChanges();
     }
 
