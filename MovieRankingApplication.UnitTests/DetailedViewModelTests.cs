@@ -23,34 +23,38 @@ public class DetailedViewModelTests
         return mockset;
     }
 
-    [TestMethod]
-    public void Load_In_NewMode()
+    public static Mock<MovieRankingDatabaseContext> GetMockDbWithBlankData()
     {
-        // fake data for mock sets
-        var userData = new List<UserScore>{ new UserScore() }.AsQueryable();
-        var movieData = new List<MovieEntry>{ new MovieEntry() }.AsQueryable();
-
-        // Creates and setup Mock Objects
-        var mockMWViewM = new Mock<MainWindowViewModel>("Test1","Test2");
+        // mock data sets, blank
+        var userData = new List<UserScore> { new UserScore() }.AsQueryable();
+        var movieData = new List<MovieEntry> { new MovieEntry() }.AsQueryable();
+        // get mock sets and context
         var mockset = GetMockDbSet(userData); // uses generic method to get an instance of Mock<DbSet<T>>
         var mockset2 = GetMockDbSet(movieData);
         var mockContext = new Mock<MovieRankingDatabaseContext>();
-
         //sets the mock context.DbSets to return from the mockSet
-        mockContext.Setup(m => m.UserScores).Returns(mockset.Object); 
+        mockContext.Setup(m => m.UserScores).Returns(mockset.Object);
         mockContext.Setup(m => m.MovieEntries).Returns(mockset2.Object);
+        return mockContext;
+    }
 
+    [TestMethod]
+    public void Load_In_NewMode()
+    {
+        // Creates or fetches mock objects
+        var mockMWViewM = new Mock<MainWindowViewModel>("Test1","Test2");
+        var mockContext = GetMockDbWithBlankData();
 
         // sets the mock mainWinRef edit mode to return true
         mockMWViewM.SetupAllProperties();
-        var trask = mockMWViewM.Object.ChangeToAddView;
-        trask.Execute(new object());
+        var trash = mockMWViewM.Object.ChangeToAddView;
+        trash.Execute(new object());
         
         // creates test viewModel.
         var viewModel = new DetailedViewModel(mockContext.Object, mockMWViewM.Object);
 
         //tests
-        Assert.AreEqual(viewModel.UserScores.Count, 2);
+        Assert.AreEqual(viewModel.UserScores.Count, 2, "Amount of created objects incorrect");
         Assert.AreEqual(viewModel.UserScores[0].ScoreId, 1);
         Assert.AreEqual(viewModel.CurrentEntry.MovieId, viewModel.UserScores[0].ScoreId);
     }
