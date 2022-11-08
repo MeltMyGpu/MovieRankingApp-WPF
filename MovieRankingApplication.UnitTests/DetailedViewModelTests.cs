@@ -11,7 +11,10 @@ namespace MovieRankingApplication.UnitTests;
 [TestClass]
 public class DetailedViewModelTests
 {
-    public static Mock<DbSet<T>> GetMockDbSet<T>(IQueryable<T> Data) where T : class
+    private IQueryable<UserScore> UserData;
+    private IQueryable<MovieEntry> MovieData;
+
+    private static Mock<DbSet<T>> GetMockDbSet<T>(IQueryable<T> Data) where T : class
     {
         // Generic method that provides a set-up mock DbSet of the provided type
         // Type is provided via the Queryable list parameter
@@ -23,24 +26,38 @@ public class DetailedViewModelTests
         return mockset;
     }
 
-    public static Mock<MovieRankingDatabaseContext> GetMockDbWithBlankData()
+    private Mock<MovieRankingDatabaseContext> GetMockDbWithBlankData()
     {
-        // mock data sets, blank
-        var userData = new List<UserScore> { new UserScore() }.AsQueryable();
-        var movieData = new List<MovieEntry> { new MovieEntry() }.AsQueryable();
         // get mock sets and context
-        var mockset = GetMockDbSet(userData); // uses generic method to get an instance of Mock<DbSet<T>>
-        var mockset2 = GetMockDbSet(movieData);
+        var mockset = GetMockDbSet(UserData); // uses generic method to get an instance of Mock<DbSet<T>>
+        var mockset2 = GetMockDbSet(MovieData);
         var mockContext = new Mock<MovieRankingDatabaseContext>();
+
         //sets the mock context.DbSets to return from the mockSet
         mockContext.Setup(m => m.UserScores).Returns(mockset.Object);
         mockContext.Setup(m => m.MovieEntries).Returns(mockset2.Object);
         return mockContext;
     }
 
-    [TestMethod]
-    public void Load_In_NewMode()
+    private void LoadTestData()
     {
+
+    }
+
+    [TestInitialize]
+    public void ResetMockData()
+    {
+        UserData = new List<UserScore>().AsQueryable();
+        MovieData = new List<MovieEntry>().AsQueryable();
+    }
+
+
+    [TestMethod]
+    public void StartingState_LoadNewMode_ShouldLoadNewObjects()
+    {
+        // Add blank data to mockData
+        UserData = UserData.Append<UserScore>(new UserScore());
+        MovieData = MovieData.Append<MovieEntry>(new MovieEntry());
         // Creates or fetches mock objects
         var mockMWViewM = new Mock<MainWindowViewModel>("Test1","Test2");
         var mockContext = GetMockDbWithBlankData();
@@ -55,7 +72,17 @@ public class DetailedViewModelTests
 
         //tests
         Assert.AreEqual(viewModel.UserScores.Count, 2, "Amount of created objects incorrect");
-        Assert.AreEqual(viewModel.UserScores[0].ScoreId, 1);
-        Assert.AreEqual(viewModel.CurrentEntry.MovieId, viewModel.UserScores[0].ScoreId);
+        Assert.AreEqual(viewModel.CurrentEntry.MovieId, viewModel.UserScores[0].ScoreId, "Movie and first ScoreId Are not even");
+        Assert.AreNotEqual(viewModel.CurrentEntry.MovieId, viewModel.UserScores[1].ScoreId, "Secong scoreId has not incremented");
     }
+
+    [TestMethod]
+    public void StartingState_LoadEditMode_ShouldLoadExistingObjects()
+    {
+        // fetch mock objects
+        var mockMainWinRef = new Mock<MainWindowViewModel>("Test1","Test2");
+        var mockContext = GetMockDbWithBlankData();
+        // add fake data
+    }
+
 }
