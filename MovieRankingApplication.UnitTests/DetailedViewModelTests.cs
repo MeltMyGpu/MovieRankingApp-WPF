@@ -28,7 +28,7 @@ public class DetailedViewModelTests
     }
 
     // DO NOT FORGET TO LOAD DATA BEFORE CALLING THIS.
-    private Mock<MovieRankingDatabaseContext> GetMockDbContext()
+    private Mock<MovieRankingDatabaseContext> GetMockDbContext() // change to tuple to get Sets back? or force hand in of Dbsets?
     {
         // get mock sets and context
         var mockset = GetMockDbSet(UserData); // uses generic method to get an instance of Mock<DbSet<T>>
@@ -121,4 +121,31 @@ public class DetailedViewModelTests
         Assert.AreNotEqual(UserScoreIndex0.ScoreId, UserScoreIndex1.ScoreId, "Same data loaded into both Indexs");
     }
 
+    [TestMethod]
+    public void DoSaveChanges_UpdateExistingDataEntries_OnlychangeEditedEntries() // TODO: move mockSet creation into class so i can directly call them
+    {
+        //fetch mocks
+        var mockMainWinRef = new Mock<MainWindowViewModel>("Test1","Test2");
+        mockMainWinRef.SetupAllProperties();
+        mockMainWinRef.Object.SelectedModel = new MovieEntryViewModel(new MovieEntry { MovieId = 2, MovieName = "Test2" });
+        LoadTestData();
+        var mockContext = GetMockDbContext();
+
+        // change somme objects, replace one with a new object but have 'IsModified' forced to false
+        var viewModel = new DetailedViewModel(mockContext.Object, mockMainWinRef.Object);
+        viewModel.UserScores[1].ActingScore = 10;
+        Assert.IsTrue(viewModel.UserScores[1].IsModified);
+        viewModel.UserScores[0] = new UserScoreViewModel(new UserScore() { MovieId = 5, ScoreId = 5 });
+        var Trash = viewModel.DoSaveChanges;
+        Trash.Execute(new object());
+
+        // Check if item that should have been updated has been
+        long ActingScoreChangeCheck = mockContext.Object.UserScores.FirstOrDefault(x => x.ScoreId == 3)?.ActingScore ?? 0L ;
+        mockContext.Verify(m => m.SaveChanges(), Times.Once());
+
+    }
+    public void DoSaveChanges_AddNewDataEntries_AddNewDataEntriesToDbSet()
+    {
+
+    }
 }
