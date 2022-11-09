@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieRankingApplication.Model.Generated;
 
 using System;
+using MovieRankingApplication.ViewModels.DataObjectViewModels;
 
 namespace MovieRankingApplication.UnitTests;
 
@@ -26,7 +27,8 @@ public class DetailedViewModelTests
         return mockset;
     }
 
-    private Mock<MovieRankingDatabaseContext> GetMockDbWithBlankData()
+    // DO NOT FORGET TO LOAD DATA BEFORE CALLING THIS.
+    private Mock<MovieRankingDatabaseContext> GetMockDbContext()
     {
         // get mock sets and context
         var mockset = GetMockDbSet(UserData); // uses generic method to get an instance of Mock<DbSet<T>>
@@ -39,9 +41,27 @@ public class DetailedViewModelTests
         return mockContext;
     }
 
+
     private void LoadTestData()
     {
-
+        var UserDataToAdd = new List<UserScore>()
+        {
+            new UserScore { MovieId = 1, ScoreId = 1 },
+            new UserScore { MovieId = 1, ScoreId = 2 },
+            new UserScore { MovieId = 2, ScoreId = 3 },
+            new UserScore { MovieId = 2, ScoreId = 4 },
+            new UserScore { MovieId = 3, ScoreId = 5 },
+            new UserScore { MovieId = 3, ScoreId = 6 }
+        };
+        foreach (var data in UserDataToAdd)
+            UserData = UserData.Append(data);
+        var MovieDataToAdd = new List<MovieEntry>()
+        {
+            new MovieEntry { MovieId = 1, MovieName = "Test1" },
+            new MovieEntry { MovieId = 2, MovieName = "Test2" },
+            new MovieEntry { MovieId = 3, MovieName = "Test3" }
+        };
+        MovieData = MovieData.Concat(MovieDataToAdd);
     }
 
     [TestInitialize]
@@ -60,7 +80,7 @@ public class DetailedViewModelTests
         MovieData = MovieData.Append<MovieEntry>(new MovieEntry());
         // Creates or fetches mock objects
         var mockMWViewM = new Mock<MainWindowViewModel>("Test1","Test2");
-        var mockContext = GetMockDbWithBlankData();
+        var mockContext = GetMockDbContext();
 
         // sets the mock mainWinRef edit mode to return true
         mockMWViewM.SetupAllProperties();
@@ -81,8 +101,24 @@ public class DetailedViewModelTests
     {
         // fetch mock objects
         var mockMainWinRef = new Mock<MainWindowViewModel>("Test1","Test2");
-        var mockContext = GetMockDbWithBlankData();
+        mockMainWinRef.SetupAllProperties();
+        mockMainWinRef.Object.SelectedModel = new MovieEntryViewModel( new MovieEntry { MovieId = 2, MovieName = "Test2" });
         // add fake data
+        LoadTestData();
+        // Get mock Context using loaded with fake data
+        var mockContext = GetMockDbContext();
+
+
+        var viewModel = new DetailedViewModel(mockContext.Object, mockMainWinRef.Object);
+        // Data extraction for Assets
+        var UserScoreIndex0 = viewModel.UserScores[0];
+        var UserScoreIndex1 = viewModel.UserScores[1];
+
+        //Tests
+        Assert.AreEqual(viewModel.CurrentEntry.MovieId, 2, "MovieIDWrong");
+        Assert.IsTrue(viewModel.HasFired, "notloadingproperly");
+        Assert.AreEqual(UserScoreIndex0.MovieId, 2L, "user score Movie Id Incorrect");
+        Assert.AreNotEqual(UserScoreIndex0.ScoreId, UserScoreIndex1.ScoreId, "Same data loaded into both Indexs");
     }
 
 }
