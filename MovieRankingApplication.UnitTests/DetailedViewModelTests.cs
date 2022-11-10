@@ -28,7 +28,7 @@ public class DetailedViewModelTests
     }
 
     // DO NOT FORGET TO LOAD DATA BEFORE CALLING THIS.
-    private Mock<MovieRankingDatabaseContext> GetMockDbContext() // change to tuple to get Sets back? or force hand in of Dbsets?
+    private (Mock<MovieRankingDatabaseContext>, Mock<DbSet<UserScore>>, Mock<DbSet<MovieEntry>>) GetMockDbContext() 
     {
         // get mock sets and context
         var mockset = GetMockDbSet(UserData); // uses generic method to get an instance of Mock<DbSet<T>>
@@ -38,7 +38,7 @@ public class DetailedViewModelTests
         //sets the mock context.DbSets to return from the mockSet
         mockContext.Setup(m => m.UserScores).Returns(mockset.Object);
         mockContext.Setup(m => m.MovieEntries).Returns(mockset2.Object);
-        return mockContext;
+        return (mockContext, mockset, mockset2);
     }
 
 
@@ -80,7 +80,7 @@ public class DetailedViewModelTests
         MovieData = MovieData.Append<MovieEntry>(new MovieEntry());
         // Creates or fetches mock objects
         var mockMWViewM = new Mock<MainWindowViewModel>("Test1","Test2");
-        var mockContext = GetMockDbContext();
+        var (mockContext, _, _ ) = GetMockDbContext();
 
         // sets the mock mainWinRef edit mode to return true
         mockMWViewM.SetupAllProperties();
@@ -106,7 +106,7 @@ public class DetailedViewModelTests
         // add fake data
         LoadTestData();
         // Get mock Context using loaded with fake data
-        var mockContext = GetMockDbContext();
+        var (mockContext, _ ,_ )= GetMockDbContext();
 
 
         var viewModel = new DetailedViewModel(mockContext.Object, mockMainWinRef.Object);
@@ -122,30 +122,54 @@ public class DetailedViewModelTests
     }
 
     [TestMethod]
-    public void DoSaveChanges_UpdateExistingDataEntries_OnlychangeEditedEntries() // TODO: move mockSet creation into class so i can directly call them
+    public void DoSaveChanges_UpdateExistingDataEntries_OnlychangeEditedEntries() 
     {
         //fetch mocks
         var mockMainWinRef = new Mock<MainWindowViewModel>("Test1","Test2");
         mockMainWinRef.SetupAllProperties();
         mockMainWinRef.Object.SelectedModel = new MovieEntryViewModel(new MovieEntry { MovieId = 2, MovieName = "Test2" });
         LoadTestData();
-        var mockContext = GetMockDbContext();
+        var (mockContext, mockUserSet, mockMovieset) = GetMockDbContext();
 
         // change somme objects, replace one with a new object but have 'IsModified' forced to false
         var viewModel = new DetailedViewModel(mockContext.Object, mockMainWinRef.Object);
         viewModel.UserScores[1].ActingScore = 10;
         Assert.IsTrue(viewModel.UserScores[1].IsModified);
         viewModel.UserScores[0] = new UserScoreViewModel(new UserScore() { MovieId = 5, ScoreId = 5 });
+
+        //Execute Target method
         var Trash = viewModel.DoSaveChanges;
         Trash.Execute(new object());
 
+        // extract data for tests
+        long ActingScoreChangeCheck = mockContext.Object.UserScores.FirstOrDefault(x => x.ScoreId == 4)?.ActingScore ?? 5L;
+
         // Check if item that should have been updated has been
-        long ActingScoreChangeCheck = mockContext.Object.UserScores.FirstOrDefault(x => x.ScoreId == 3)?.ActingScore ?? 0L ;
+        Assert.AreEqual(10, ActingScoreChangeCheck);
+        mockUserSet.Verify(m => m.Update(It.IsAny<UserScore>()), Times.Once);
         mockContext.Verify(m => m.SaveChanges(), Times.Once());
 
     }
+    [TestMethod]
     public void DoSaveChanges_AddNewDataEntries_AddNewDataEntriesToDbSet()
     {
+        // Fetch mocks
+        var mockMainWinRef = new Mock<MainWindowViewModel>("Test1","Test2");
+        var (mockContext, mockUserSet, mockMovieset) = GetMockDbContext();
+
+        // Setup values for mocks
+        mockMainWinRef.SetupAllProperties();
+        var Trash = mockMainWinRef.Object.ChangeToAddView;
+        Trash.Execute(new object());
+        // get test object and run method
+        var viewModel = new DetailedViewModel(mockContext.Object, mockMainWinRef.Object);
+        var AddChangesTrash = viewModel.DoSaveChanges;
+        AddChangesTrash.Execute(new object());
+
+        // Tests
+        mockUserSet.Verify(m => m.Add(It.IsAny<UserScore>()), Times.Exactly(2));
+        mockMovieset.Verify(m => m.Add(It.IsAny<MovieEntry>()), Times.Once);
+        mockContext.Verify(m => m.SaveChanges(), Times.Once);
 
     }
 }
