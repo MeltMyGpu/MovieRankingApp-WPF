@@ -155,6 +155,8 @@ public class DetailedViewModelTests
     {
         // Fetch mocks
         var mockMainWinRef = new Mock<MainWindowViewModel>("Test1","Test2");
+        UserData = UserData.Append<UserScore>(new UserScore());
+        MovieData = MovieData.Append<MovieEntry>(new MovieEntry());
         var (mockContext, mockUserSet, mockMovieset) = GetMockDbContext();
 
         // Setup values for mocks

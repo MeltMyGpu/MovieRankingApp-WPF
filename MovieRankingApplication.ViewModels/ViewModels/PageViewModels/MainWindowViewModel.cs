@@ -37,6 +37,7 @@ public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     private string _currentPageUri;
     public string CurrentPageUri => _currentPageUri;
 
+
     public ICommand ChangeToEditView => new DelegateCommand(DoChangeToEditView);
 
     public ICommand ChangeToAddView => new DelegateCommand(DoChangeToAddView);
