@@ -8,11 +8,11 @@ using MovieRankingApplication.Model.Generated;
 using MovieRankingApplication.ViewModels.DataObjectViewModels;
 using MovieRankingApplication.ViewModels.Interfaces;
 using MovieRankingApplication.MvvmHelpers;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace MovieRankingApplication.ViewModels.PageViewModels;
 
-public class DetailedViewModel
+public class DetailedViewModel : IDetailedViewModel
 {
     private IMovieEntryViewModel _currentEntry;
     private IList<IUserScoreViewModel> _userScores;
@@ -35,9 +35,9 @@ public class DetailedViewModel
     public IMovieEntryViewModel CurrentEntry
     {
         get => _currentEntry;
-        set 
+        set
         {
-            if(_currentEntry != value)
+            if (_currentEntry != value)
                 _currentEntry = value;
         }
     }
@@ -47,7 +47,7 @@ public class DetailedViewModel
         get => _userScores;
         set
         {
-            if(_userScores != value)
+            if (_userScores != value)
                 _userScores = value;
         }
     }
@@ -65,7 +65,7 @@ public class DetailedViewModel
     /// </summary>
     private void CheckLoadTypeOrResetChanges()
     {
-        if ( _mainWinRef.EditMode == true)
+        if (_mainWinRef.EditMode == true)
             LoadEditMode();
         else LoadNewMode();
     }
@@ -79,9 +79,9 @@ public class DetailedViewModel
 
         _currentEntry = FreshMovieEntry(HighestEntryId);
 
-       // Creates new userScores based off of the amount of usernames provided in mainWinRef 
+        // Creates new userScores based off of the amount of usernames provided in mainWinRef 
         for (int i = 1; i <= _mainWinRef.UserNames.Count(); i++)
-            _userScores.Add(FreshUserScore( i, HighestScoreId ));
+            _userScores.Add(FreshUserScore(i, HighestScoreId));
     }
     private IMovieEntryViewModel FreshMovieEntry(long highestEntryId)
     {
@@ -113,8 +113,8 @@ public class DetailedViewModel
     private void LoadEditMode()
     {
         _currentEntry = _mainWinRef.SelectedModel;
-        
-        foreach(var score in _databaseContext.UserScores.Where(x => x.MovieId == _currentEntry.MovieId).ToList())
+
+        foreach (var score in _databaseContext.UserScores.Where(x => x.MovieId == _currentEntry.MovieId).ToList())
         {
             HasFired = true;
             _userScores.Add(new UserScoreViewModel(score)); // change to factory?
@@ -126,7 +126,7 @@ public class DetailedViewModel
     /// </summary>
     private void CheckTypeOfSave()
     {
-        if(_mainWinRef.EditMode == true)
+        if (_mainWinRef.EditMode == true)
             SaveChanges();
         else AddChanges();
     }
@@ -137,12 +137,12 @@ public class DetailedViewModel
     /// </summary>
     private void SaveChanges()
     {
-        if(_currentEntry.IsModified == true)
+        if (_currentEntry.IsModified == true)
             _databaseContext.MovieEntries.Update(_currentEntry.Model);
 
-        foreach( var Score in _userScores)
+        foreach (var Score in _userScores)
         {
-            if(Score.IsModified == true)
+            if (Score.IsModified == true)
                 _databaseContext.UserScores.Update(Score.Model);
         }
         _databaseContext.DoSaveChanges();
