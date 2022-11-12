@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieRankingApplication"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        DataContext="{Binding GetMainWindowViewModel, Source={StaticResource ViewModelLocator}}"
+        Title="MovieRankingApplication" Height="450" Width="800">
+
     <Grid>
         
     </Grid>

@@ -16,7 +16,7 @@ namespace MovieRankingApplication.UnitTests
         [TestMethod]
         public void ChangeToEditView_ReturnDelegateThatChangesCurrentPageUri_ChangeCurrentPageUriToEditView()
         {
-            var MainWinVM = new MainWindowViewModel("Test1");
+            var MainWinVM = new MainWindowViewModel();
 
             var ChangeToEditDelegate = MainWinVM.ChangeToEditView;
             ChangeToEditDelegate.Execute(new object());
@@ -28,7 +28,7 @@ namespace MovieRankingApplication.UnitTests
         [TestMethod]
         public void ChangeToAddView_ReturnDelegateThatChangesCurrentPageUri_ChangeCurrentPageUriToAddView()
         {
-            var MainWinVM = new MainWindowViewModel("Test1");
+            var MainWinVM = new MainWindowViewModel();
 
             var ChangeToAddDelegate = MainWinVM.ChangeToAddView;
             ChangeToAddDelegate.Execute(new object());
@@ -40,7 +40,7 @@ namespace MovieRankingApplication.UnitTests
         [TestMethod]
         public void ChangeToListView_ReturnDelegateThatChangesCurrentPageUri_ChangeCurrentPageUriToListView()
         {
-            var MainWinVM = new MainWindowViewModel("Test1");
+            var MainWinVM = new MainWindowViewModel();
 
             var ChangeToListDelegate = MainWinVM.ChangetoListView;
             ChangeToListDelegate.Execute(new object());
