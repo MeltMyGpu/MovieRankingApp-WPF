@@ -1,0 +1,22 @@
+﻿<Window x:Class="MovieRankingApplication.ApplicationHelpers.TestingValueTrackerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieRankingApplication.ApplicationHelpers"
+        mc:Ignorable="d"
+        Title="TestingValueTrackerWindow" Height="450" Width="800"
+        DataContext="{Binding GetMainWindowViewModel, Source={StaticResource ViewModelLocator}}"
+        >
+    <Grid>
+        <DataGrid x:Name="DataGrid1" AutoGenerateColumns="False" ItemsSource="{Binding SelectedModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Movie Id" Binding="{Binding MovieId, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Movie Title" Binding="{Binding MovieName, UpdateSourceTrigger=PropertyChanged}" Width="0.15*"/>
+                <DataGridTextColumn Header="Movie Genre" Binding="{Binding MovieGenre, UpdateSourceTrigger=PropertyChanged}" Width="0.15*" />
+                <DataGridTextColumn Header="Movie Rating" Binding="{Binding MovieTotalScore, UpdateSourceTrigger=PropertyChanged}" Width="0.15*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

@@ -10,12 +10,15 @@ namespace MovieRankingApplication.ViewModels.PageViewModels;
 public class MovieListViewModel : BindableBase, IMovieListViewModel
 {
     private readonly IMovieRankingDatabaseContext _databaseContext;
-    public List<IMovieEntryViewModel> MovieList { get; set; } = null!;
+    public List<IMovieEntryViewModel> MovieList { get; set; }
+    public IMainWindowViewModel MainWinRef { get; }
 
 
-    public MovieListViewModel(IMovieRankingDatabaseContext databaseContext)
+    public MovieListViewModel(IMovieRankingDatabaseContext databaseContext, IMainWindowViewModel mainWinRef)
     {
         _databaseContext = databaseContext;
+        MainWinRef = mainWinRef;
+        MovieList = new();
         LoadMovieList();
     }
 

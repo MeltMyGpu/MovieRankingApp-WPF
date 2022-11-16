@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MovieRankingApplication.ApplicationHelpers;
+using MovieRankingApplication.ViewModels.Interfaces;
 using System.Windows;
 
 namespace MovieRankingApplication
@@ -28,7 +29,9 @@ namespace MovieRankingApplication
             await AppHost!.StartAsync();
             // safe to start app
             var StartUpPage = AppHost.Services.GetRequiredService<MainWindow>();
+            //var TestingWindow = new TestingValueTrackerWindow();
             StartUpPage.Show();
+            //TestingWindow.Show();
         }
 
         protected override async void OnExit(ExitEventArgs exitArgs)

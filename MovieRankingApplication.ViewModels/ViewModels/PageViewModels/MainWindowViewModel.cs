@@ -2,16 +2,18 @@ using System.Windows.Input;
 using MovieRankingApplication.ViewModels.Interfaces;
 using MovieRankingApplication.MvvmHelpers;
 using MovieRankingApplication.ViewModels.DataObjectViewModels;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace MovieRankingApplication.ViewModels.PageViewModels;
 
 public class MainWindowViewModel : BindableBase, IMainWindowViewModel
 {
-
+    
     public MainWindowViewModel()
     {
-        _selectedModel = new MovieEntryViewModel();
-        _currentPageUri = "PlaceHolder";
+        _selectedModel = new MovieEntryViewModel() { MovieId = 2};
+        _currentPageUri = "../Views/MovieListPage.xaml";
         _editMode = true;
     }
 
@@ -29,7 +31,10 @@ public class MainWindowViewModel : BindableBase, IMainWindowViewModel
         set
         {
             if (_selectedModel != value)
+            {
                 _selectedModel = value;
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -63,7 +68,7 @@ public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     }
     private void DoChangeToListView()
     {
-        _currentPageUri = "PlaceHolderStringForListView";
+        _currentPageUri = "../Views/MovieListPage.xaml";
     }
 
     #endregion

@@ -7,4 +7,6 @@ namespace MovieRankingApplication.ViewModels.Interfaces;
 public interface IMovieListViewModel
 {
     public List<IMovieEntryViewModel> MovieList { get; set; }
+    public IMainWindowViewModel MainWinRef {  get;}
+
 }

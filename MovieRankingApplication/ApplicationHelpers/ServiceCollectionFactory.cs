@@ -19,12 +19,12 @@ public static class ServiceCollectionFactory
         return Host.CreateDefaultBuilder()
             .ConfigureServices((hostContext, services) =>
             {
+                services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
                 services.AddDbContext<IMovieRankingDatabaseContext, MovieRankingDatabaseContext>();
                 services.AddTransient<IMovieListViewModel, MovieListViewModel>();
                 services.AddTransient<IDetailedViewModel, DetailedViewModel>();
-                services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
-                services.AddSingleton<MainWindow>();
                 services.AddSingleton<ViewModelLocator>();
+                services.AddSingleton<MainWindow>();
             })
             .Build();
     }
